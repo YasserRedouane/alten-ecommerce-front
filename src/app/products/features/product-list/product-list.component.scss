@@ -1,0 +1,19 @@
+:host {
+    display: block;
+    height: 100%;
+    overflow: auto;
+}
+
+.stars {
+    display: inline-block;
+  }
+  
+  .star {
+    color: gold;
+    font-size: 1.5rem;
+  }
+  
+  .empty {
+    color: #dcdcdc;  /* Light grey for empty stars */
+  }
+  
