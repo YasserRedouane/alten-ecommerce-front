@@ -2,7 +2,6 @@ import {Injectable, inject, signal} from "@angular/core";
 import {Product} from "./product.model";
 import {HttpClient} from "@angular/common/http";
 import {catchError, map, Observable, of, tap} from "rxjs";
-import {MessageService} from "primeng/api";
 
 @Injectable({
   providedIn: "root"
@@ -10,7 +9,6 @@ import {MessageService} from "primeng/api";
 export class ProductsService {
 
   private readonly http = inject(HttpClient);
-  private readonly messageService = inject(MessageService);
   private readonly path = "/api/products";
 
   private readonly _products = signal<Product[]>([]);

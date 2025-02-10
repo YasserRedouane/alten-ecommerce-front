@@ -73,7 +73,7 @@ export class ProductListComponent implements OnInit {
   public onCreate() {
     this.isCreation = true;
     this.isDialogVisible = true;
-    this.editedProduct.set(emptyProduct);
+    this.editedProduct.set({... emptyProduct});
   }
 
   public onUpdate(product: Product) {
@@ -152,6 +152,7 @@ export class ProductListComponent implements OnInit {
 
 
   public onCancel() {
+    this.editedProduct.set({ ...emptyProduct });
     this.closeDialog();
   }
 
