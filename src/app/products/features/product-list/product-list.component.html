@@ -3,55 +3,62 @@
 <p-button label="Créer produit" (onClick)="onCreate()" class="block text-center"/>
 
 <p-dataView #dv [value]="products()">
-    <ng-template pTemplate="list" let-products>
-        @for (product of products; track product) {
-            <p-card class="block mb-2">
-                <!-- Product Code -->
-            <span class="font-medium text-secondary text-sm">{{ product.code }}</span>
-            
-            <!-- Product Category -->
-            <div class="text-lg font-medium text-900 mt-2">{{ product.category }}</div>
-            
-            <!-- Product Name -->
-            <div class="text-xl font-semibold text-900">{{ product.name }}</div>
-            
-            <!-- Product Description -->
-            <p class="text-sm text-gray-700">{{ product.description }}</p>
+  <ng-template pTemplate="list" let-products>
+    @for (product of products; track product) {
+      <p-card class="block mb-2">
+        <!-- Product Code -->
+        <span class="font-medium text-secondary text-sm">{{ product.code }}</span>
 
-            <!-- Product Price -->
-            <div class="text-xl font-medium text-900 mt-1">{{ product.price }}</div>
+        <!-- Product Category -->
+        <div class="text-lg font-medium text-900 mt-2">{{ product.category }}</div>
 
-            <!-- Product Rating (Simple Stars) -->
-            <div class="mt-2">
-                <div class="stars">
-                    <span *ngFor="let star of getRatingStars(product.rating)" class="star">&#9733;</span>
-                    <span *ngFor="let star of getEmptyStars(product.rating)" class="star empty">&#9733;</span>
-                </div>
-            </div>
-            
-            <!-- Product Inventory Status -->
-            <div class="mt-2">
-                <span class="badge" [ngClass]="{
-                    'bg-green-500': product.inventoryStatus === 'INSTOCK',
-                    'bg-yellow-500': product.inventoryStatus === 'LOWSTOCK',
-                    'bg-red-500': product.inventoryStatus === 'OUTOFSTOCK'
-                }">
-                    {{ product.inventoryStatus | uppercase }}
-                </span>
-            </div>
+        <!-- Product Name -->
+        <div class="text-xl font-semibold text-900">{{ product.name }}</div>
 
-                <ng-template pTemplate="footer">
-                    <div class="flex gap-3 mt-1">
-                        <p-button label="Modifier" severity="secondary" (onClick)="onUpdate(product)"/>
-                        <p-button label="Supprimer" severity="danger" (onClick)="onDelete(product)" />
-                        <!-- Add to Cart Button -->
-                        <p-button label="Ajouter au panier" (onClick)="addToCart(product)" icon="pi pi-shopping-cart"></p-button>
-                    </div>
-                </ng-template>
-            </p-card>
-        }
-    </ng-template>
+        <!-- Product Description -->
+        <p class="text-sm text-gray-700">{{ product.description }}</p>
+
+        <!-- Product Price -->
+        <div class="text-xl font-medium text-900 mt-1">{{ product.price }}</div>
+
+        <!-- Product Rating (Simple Stars) -->
+        <div class="mt-2">
+          <div class="stars">
+            <span *ngFor="let star of getRatingStars(product.rating)" class="star">&#9733;</span>
+            <span *ngFor="let star of getEmptyStars(product.rating)" class="star empty">&#9733;</span>
+          </div>
+        </div>
+
+        <!-- Product Inventory Status -->
+        <div class="mt-2">
+                    <span class="badge" [ngClass]="{
+                        'bg-green-500': product.inventoryStatus === 'INSTOCK',
+                        'bg-yellow-500': product.inventoryStatus === 'LOWSTOCK',
+                        'bg-red-500': product.inventoryStatus === 'OUTOFSTOCK'
+                    }">
+                        {{ product.inventoryStatus | uppercase }}
+                    </span>
+        </div>
+
+        <ng-template pTemplate="footer">
+          <div class="flex gap-3 mt-1">
+            <p-button label="Modifier" severity="secondary" (onClick)="onUpdate(product)"/>
+            <p-button label="Supprimer" severity="danger" (onClick)="onDelete(product)" />
+            <p-button label="Ajouter au panier" (onClick)="addToCart(product)" icon="pi pi-shopping-cart"></p-button>
+          </div>
+        </ng-template>
+      </p-card>
+    }
+  </ng-template>
 </p-dataView>
+
+<p-paginator
+  [rows]="pageSize"
+  [totalRecords]="totalRecords()"
+  [rowsPerPageOptions]="[5, 10, 20]"
+  (onPageChange)="onPageChange($event)">
+</p-paginator>
+
 
 <p-dialog [(visible)]="isDialogVisible"
     [style]="{ width: '50vw' }"

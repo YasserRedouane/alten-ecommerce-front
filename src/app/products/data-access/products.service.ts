@@ -1,7 +1,7 @@
 import { Injectable, inject, signal } from "@angular/core";
 import { Product } from "./product.model";
 import { HttpClient } from "@angular/common/http";
-import { catchError, Observable, of, tap } from "rxjs";
+import {catchError, map, Observable, of, tap} from "rxjs";
 
 @Injectable({
     providedIn: "root"
@@ -9,19 +9,36 @@ import { catchError, Observable, of, tap } from "rxjs";
 
     private readonly http = inject(HttpClient);
     private readonly path = "/api/products";
-    
+
     private readonly _products = signal<Product[]>([]);
+    private readonly _totalRecords = signal<number>(0);
 
     public readonly products = this._products.asReadonly();
+    public readonly totalRecords = this._totalRecords.asReadonly();
 
-    public get(): Observable<Product[]> {
-        return this.http.get<Product[]>(this.path).pipe(
-            catchError((error) => {
-                return this.http.get<Product[]>("assets/products.json");
-            }),
-            tap((products) => this._products.set(products)),
+  public get(page: number = 0, size: number = 5): Observable<{ data: Product[], total: number }> {
+    return this.http.get<{ data: Product[], total: number }>(`${this.path}?page=${page}&size=${size}`).pipe(
+      catchError(() => {
+        return this.http.get<Product[]>("assets/products.json").pipe(
+          map((products) => {
+            const paginatedData = products.slice(page * size, (page + 1) * size);
+            return {
+              data: paginatedData,
+              total: products.length
+            };
+          }),
+          tap((response) => {
+            this._products.set(response.data);
+            this._totalRecords.set(response.total);
+          })
         );
-    }
+      }),
+      tap((response) => {
+        this._products.set(response.data);
+        this._totalRecords.set(response.total);
+      })
+    );
+  }
 
     public create(product: Product): Observable<boolean> {
         return this.http.post<boolean>(this.path, product).pipe(

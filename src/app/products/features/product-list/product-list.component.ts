@@ -8,6 +8,7 @@ import { ButtonModule } from "primeng/button";
 import { CardModule } from "primeng/card";
 import { DataViewModule } from 'primeng/dataview';
 import { DialogModule } from 'primeng/dialog';
+import {PaginatorModule} from "primeng/paginator";
 
 const emptyProduct: Product = {
   id: 0,
@@ -31,20 +32,28 @@ const emptyProduct: Product = {
   templateUrl: "./product-list.component.html",
   styleUrls: ["./product-list.component.scss"],
   standalone: true,
-  imports: [DataViewModule, CardModule, ButtonModule, DialogModule, ProductFormComponent, CommonModule],
+  imports: [DataViewModule, CardModule, ButtonModule, DialogModule, ProductFormComponent, CommonModule, PaginatorModule],
 })
 export class ProductListComponent implements OnInit {
   private readonly productsService = inject(ProductsService);
   private readonly cartService = inject(CartService);
 
   public readonly products = this.productsService.products;
+  public readonly totalRecords = this.productsService.totalRecords;
 
   public isDialogVisible = false;
   public isCreation = false;
   public readonly editedProduct = signal<Product>(emptyProduct);
 
+  public currentPage = 0;
+  public pageSize = 5;
+
   ngOnInit() {
-    this.productsService.get().subscribe();
+    this.loadProducts();
+  }
+
+  loadProducts() {
+    this.productsService.get(this.currentPage, this.pageSize).subscribe();
   }
 
   // Get filled stars based on rating
@@ -54,7 +63,7 @@ export class ProductListComponent implements OnInit {
 
   // Get empty stars based on rating
   getEmptyStars(rating: number): number[] {
-    const validRating = Math.max(0, Math.min(5, Math.floor(rating)));  
+    const validRating = Math.max(0, Math.min(5, Math.floor(rating)));
     return new Array(5 - validRating);
   }
 
@@ -94,5 +103,11 @@ export class ProductListComponent implements OnInit {
   addToCart(product: Product) {
     console.log(product);
     this.cartService.addToCart(product);
+  }
+
+  onPageChange(event: any) {
+    this.currentPage = event.page;
+    this.pageSize = event.rows;
+    this.loadProducts();
   }
 }
