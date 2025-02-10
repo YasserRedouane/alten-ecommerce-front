@@ -1,15 +1,14 @@
 <!-- cart.component.html -->
 <div *ngIf="cartVisible" class="cart-container">
-    <h2>Panier</h2>
-    <button class="close-btn" (click)="closeCart()">X</button>
-  
-    <p *ngIf="cartItems.length === 0">Votre panier est vide.</p>
-    
-    <ul *ngIf="cartItems.length > 0">
-      <li *ngFor="let product of cartItems">
-        <span>{{ product.name }} - {{ product.price | currency }}</span>
-        <button (click)="removeProduct(product)" class="remove-btn">Supprimer</button>
-      </li>
-    </ul>
-  </div>
-  
+  <h2>Panier</h2>
+  <button class="close-btn" (click)="closeCart()">X</button>
+
+  <p *ngIf="cartItems.length === 0">Votre panier est vide.</p>
+
+  <ul *ngIf="cartItems.length > 0">
+    <li *ngFor="let product of cartItems">
+      <span>{{ product.name }} - {{ product.price | currency }}</span>
+      <button (click)="removeProduct(product)" class="remove-btn">Supprimer</button>
+    </li>
+  </ul>
+</div>

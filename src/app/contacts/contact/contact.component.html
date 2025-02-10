@@ -1,49 +1,46 @@
 <div class="contact-container">
-    <h2>Contactez-nous</h2>
-  
-    <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
-      <!-- Email Field -->
-      <div class="form-group">
-        <label for="email">Email:</label>
-        <input
-          id="email"
-          type="email"
-          formControlName="email"
-          class="form-control"
-          [class.invalid]="contactForm.get('email')?.invalid && contactForm.get('email')?.touched"
-        />
-        <div *ngIf="contactForm.get('email')?.invalid && contactForm.get('email')?.touched" class="error">
-          Un email valide est requis.
-        </div>
+  <h2>Contactez-nous</h2>
+
+  <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+    <!-- Email Field -->
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input
+        id="email"
+        type="email"
+        formControlName="email"
+        class="form-control"
+        [class.invalid]="contactForm.get('email')?.invalid && contactForm.get('email')?.touched"
+      />
+      <div *ngIf="contactForm.get('email')?.invalid && contactForm.get('email')?.touched" class="error">
+        Un email valide est requis.
       </div>
-  
-      <!-- Message Field -->
-      <div class="form-group">
-        <label for="message">Message:</label>
-        <textarea
-          id="message"
-          rows="5"
-          formControlName="message"
-          class="form-control"
-          [class.invalid]="contactForm.get('message')?.invalid && contactForm.get('message')?.touched"
-        ></textarea>
-        <div class="char-counter">
-            {{ messageLength }} / {{ maxMessageLength }} caractères
-        </div>
-        <div *ngIf="contactForm.get('message')?.invalid && contactForm.get('message')?.touched" class="error">
-          Le message est requis et doit contenir moins de 300 caractères.
-        </div>
+    </div>
+
+    <!-- Message Field -->
+    <div class="form-group">
+      <label for="message">Message:</label>
+      <textarea
+        id="message"
+        rows="5"
+        formControlName="message"
+        class="form-control"
+        [class.invalid]="contactForm.get('message')?.invalid && contactForm.get('message')?.touched"
+      ></textarea>
+      <div class="char-counter">
+        {{ messageLength }} / {{ maxMessageLength }} caractères
       </div>
-  
-      <!-- Submit Button -->
-      <button type="submit" [disabled]="contactForm.invalid" class="btn-submit">
-        Envoyer
-      </button>
-    </form>
-  
-    <!-- Success Message -->
-    <p *ngIf="successMessage" class="success-message">
-      {{ successMessage }}
-    </p>
-  </div>
-  
+      <div *ngIf="contactForm.get('message')?.invalid && contactForm.get('message')?.touched" class="error">
+        Le message est requis et doit contenir moins de 300 caractères.
+      </div>
+    </div>
+
+    <!-- Submit Button -->
+    <button type="submit" [disabled]="contactForm.invalid" class="btn-submit">
+      Envoyer
+    </button>
+  </form>
+
+  <p-toast></p-toast>
+
+</div>

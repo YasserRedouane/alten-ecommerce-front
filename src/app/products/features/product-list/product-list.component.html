@@ -1,6 +1,7 @@
 <h1 class="text-center">Liste des produits</h1>
 
 <p-button label="Créer produit" (onClick)="onCreate()" class="block text-center"/>
+<p-toast></p-toast>
 
 <p-dataView #dv [value]="products()">
   <ng-template pTemplate="list" let-products>
@@ -43,7 +44,7 @@
         <ng-template pTemplate="footer">
           <div class="flex gap-3 mt-1">
             <p-button label="Modifier" severity="secondary" (onClick)="onUpdate(product)"/>
-            <p-button label="Supprimer" severity="danger" (onClick)="onDelete(product)" />
+            <p-button label="Supprimer" severity="danger" (onClick)="onDelete(product)"/>
             <p-button label="Ajouter au panier" (onClick)="addToCart(product)" icon="pi pi-shopping-cart"></p-button>
           </div>
         </ng-template>
@@ -61,11 +62,11 @@
 
 
 <p-dialog [(visible)]="isDialogVisible"
-    [style]="{ width: '50vw' }"
-    header="Ajout/Edition produit">
-    <app-product-form
-        [product]="editedProduct()"
-        (save)="onSave($event)"
-        (cancel)="onCancel()"
-    />
+          [style]="{ width: '50vw' }"
+          header="Ajout/Edition produit">
+  <app-product-form
+    [product]="editedProduct()"
+    (save)="onSave($event)"
+    (cancel)="onCancel()"
+  />
 </p-dialog>
